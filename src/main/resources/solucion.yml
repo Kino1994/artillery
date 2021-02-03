@@ -30,11 +30,14 @@ scenarios:
     flow:
       - get:
           url: "/api/books/"
+          capture:
+            json: "$[0].id"
+            as: "id"
           expect:
             - statusCode: 200
             - contentType: json
       - get:
-          url: "/api/books/1"
+          url: "/api/books/{{ id }}"
           expect:
             - statusCode: 200
             - contentType: json
@@ -46,6 +49,8 @@ scenarios:
           auth:
             user: "{{ username }}"
             pass: "{{ password }}"
+          expect:
+            - statusCode: 200
       - post:
           url: "/api/books/"
           json:
@@ -76,6 +81,8 @@ scenarios:
           auth:
             user: "admin"
             pass: "{{ password }}"
+          expect:
+            - statusCode: 200
       - post:
           url: "/api/books/"
           json:
@@ -87,6 +94,10 @@ scenarios:
           expect:
             - statusCode: 201
             - contentType: json
+      - get:
+          url: "/api/books/{{ id }}"
+          expect:
+            - statusCode: 200
       - delete:
           url: "/api/books/{{ id }}"
           expect:
@@ -95,3 +106,9 @@ scenarios:
           url: "/api/books/{{ id }}"
           expect:
             - statusCode: 404
+            
+            
+            
+            
+            
+            
